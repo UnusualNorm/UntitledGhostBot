@@ -8,11 +8,11 @@ using Untitled_Ghost_Mod;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Untitled Ghost Mod")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A MelonLoader mod for Untitled Ghost Game.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Norm Studios")]
 [assembly: AssemblyProduct("Untitled Ghost Mod")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright © Unusual Norm 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,6 +34,6 @@ using Untitled_Ghost_Mod;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyFileVersion("1.0.0")]
 [assembly: MelonInfo(typeof(UGM), "Untitled Ghost Mod", "1.0.0", "Unusual Norm")]
