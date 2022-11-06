@@ -1,38 +1,15 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using MelonLoader;
+using System;
+using UnityEngine;
 
 namespace Untitled_Ghost_Mod
 {
     internal class UGMUtils
     {
-        private static GameObject OverlyComplexFindNest(GameObject child, string name)
+        public static T FindComponentWithName<T>(string name) where T : UnityEngine.Object
         {
-            var childCount = child.transform.childCount;
-            for (int i = 0; i < childCount; i++)
-            {
-                var childChild = child.transform.GetChild(i).gameObject;
-                if (childChild.name == name) return childChild;
-                var foundChild = OverlyComplexFindNest(child, name);
-                if (!foundChild) continue;
-                return foundChild;
-            }
-
-            return null;
-        }
-
-        public static GameObject OverlyComplexFind(string name)
-        {
-            var scene = SceneManager.GetActiveScene();
-            var children = scene.GetRootGameObjects();
-            foreach (var child in children)
-            {
-                if (child.name == name) return child;
-                var foundChild = OverlyComplexFindNest(child, name);
-                if (!foundChild) continue;
-                return foundChild;
-            }
-
-            return null;
+            var components = UnityEngine.Object.FindObjectsOfType<T>(true);
+            return Array.Find(components, component => component.name == name);
         }
     }
 }

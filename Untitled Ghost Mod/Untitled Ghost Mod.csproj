@@ -460,6 +460,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PhotonObject.cs" />
+    <Compile Include="Object.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="UGM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
