@@ -36,7 +36,7 @@ namespace Untitled_Ghost_Mod
                 "Honestly, it's probably... [redacted]",
                 "What do you call it when a ghost gets out of bounds? A bug.",
                 "Hot diggity dang batman!",
-                "I once sat on my keyboard, it cracked under my sheer force of nature.",
+                "I once sat on my keyboard.",
                 "Woweewoweeowwweeowwweewwwwooowwwweeee",
                 "Hummina hummina awooga!",
                 "The devs said they're adding a sex mod!",
@@ -49,8 +49,8 @@ namespace Untitled_Ghost_Mod
                 "My friend stuck his 6th finger in a pencil sharpener once.",
                 "How to GameDev? Where is google? Google, Why isn't Google working? Is Google down?",
                 "UwU what's this?",
-                "Breaking News: Local man takes a dump in a toaster, says it let's off a nice fragrance",
-                "Listen, between you and me; I think today's gonna be one of the day's of your life.",
+                "Breaking News: Local man takes a dump in a toaster, says it let's off a nice fragrance.",
+                "Listen, between you and me; I think today's gonna be one of the days of your life.",
                 "Anime mode coming soon!",
                 "Master chief, mind telling me what you're doing on that wall?",
                 "Fun Fact: I browse r/copypasta whenever I come up with tips!",
@@ -64,7 +64,7 @@ namespace Untitled_Ghost_Mod
             var tips = UGMUtils.FindComponentWithName<Tips>("Tips");
             if (!tips)
             {
-                Melon<UGM>.Logger.Warning("Could not find ips tips...");
+                Melon<UGM>.Logger.Warning("Could not find tips tips...");
                 return;
             }
 
