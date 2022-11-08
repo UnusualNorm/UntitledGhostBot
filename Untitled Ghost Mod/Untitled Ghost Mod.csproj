@@ -460,6 +460,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Patches.cs" />
     <Compile Include="PhotonObject.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="Utils.cs" />

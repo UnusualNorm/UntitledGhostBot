@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System;
 
 namespace Untitled_Ghost_Mod
 {
@@ -118,6 +119,24 @@ namespace Untitled_Ghost_Mod
                         OverwriteTips();
                         break;
                     }
+            }
+        }
+
+        public void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                Melon<UGM>.Logger.Msg("Toggling ULTRA-FLASHLIGHT...");
+                var children = SceneManager.GetActiveScene().GetRootGameObjects();
+                var shadow = Array.Find(children, child => child.name == "Shadow");
+                if (!shadow)
+                {
+                    Melon<UGM>.Logger.Warning("Could not shadows...");
+                    return;
+                }
+
+                shadow.SetActive(!shadow.activeSelf);
+                Melon<UGM>.Logger.Msg("Toggled ULTRA-FLASHLIGHT!");
             }
         }
     }

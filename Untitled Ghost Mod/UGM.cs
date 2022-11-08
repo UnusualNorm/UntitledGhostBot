@@ -6,9 +6,6 @@ namespace Untitled_Ghost_Mod
 {
     public class UGM : MelonMod
     {
-        // TODO: Implement version checking, fsr they lock the app version at 1
-        public string targetVersion = "1.0.9";
-
         private MelonPreferences_Category UGMC;
         private MelonPreferences_Entry<float> generalMaxDifficulty;
         private MelonPreferences_Entry<string> multiplayerMockGameVersion;
