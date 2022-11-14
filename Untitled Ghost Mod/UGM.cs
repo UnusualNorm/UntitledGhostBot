@@ -1,5 +1,6 @@
 ﻿using MelonLoader;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Untitled_Ghost_Mod
 {
@@ -24,10 +25,10 @@ namespace Untitled_Ghost_Mod
             LoggerInstance.Msg("Creating Melon configuration...");
             ugmCategory = MelonPreferences.CreateCategory("UGM");
             smoothCamEnabled = ugmCategory.CreateEntry<bool>("SmoothCam", true);
-            smoothCamSpeed = ugmCategory.CreateEntry<float>("SmoothCameraSpeed", 6.5f);
-            smoothCamBump = ugmCategory.CreateEntry<float>("SmoothCameraBump", .75f);
+            smoothCamSpeed = ugmCategory.CreateEntry<float>("SmoothCameraSpeed", 6);
+            smoothCamBump = ugmCategory.CreateEntry<float>("SmoothCameraBump", 1);
 
-            cameraSizeMultiplier = ugmCategory.CreateEntry<float>("CameraSizeMultiplier", 1.5f);
+            cameraSizeMultiplier = ugmCategory.CreateEntry<float>("CameraSizeMultiplier", 1.2f);
             maxDifficulty = ugmCategory.CreateEntry<float>("MaxDifficulty", 10);
             maxPlayers = ugmCategory.CreateEntry<byte>("MultiplayerMaxPlayers", 255);
 
@@ -58,6 +59,12 @@ namespace Untitled_Ghost_Mod
             ugmPhoton.ugm = this;
             ugmPhoton.maxPlayers = maxPlayers;
             return obj;
+        }
+
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            if (sceneName == "Intro")
+                SceneManager.LoadScene("Menu");
         }
     }
 }

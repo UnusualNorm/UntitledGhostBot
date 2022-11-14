@@ -11,6 +11,7 @@ using static Untitled_Ghost_Mod.UGMUtils;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 namespace Untitled_Ghost_Mod
 {
@@ -71,7 +72,7 @@ namespace Untitled_Ghost_Mod
         }
     }
 
-    [HarmonyPatch(typeof(BookUI), "Start")]
+    /*[HarmonyPatch(typeof(BookUI), "Start")]
     static class CorrectGhostChoicePatch
     {
         private static void Postfix(BookUI __instance)
@@ -82,7 +83,7 @@ namespace Untitled_Ghost_Mod
             var ghostI = __instance.guessDropdown.options.FindIndex(type => type.text.ToLower() == eai.currghosttype.ToLower());
             __instance.guessDropdown.value = ghostI;
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(LuigiBoard), "Start")]
     static class ExtraLuigiBoardPatch
@@ -212,6 +213,8 @@ namespace Untitled_Ghost_Mod
 
         private static void Postfix(Movement __instance)
         {
+            if (PhotonNetwork.IsConnected && !__instance.photonView.IsMine) return;
+
             // TODO: Optomize more, as this is called every frame...
             if (Melon<UGM>.Instance.smoothCamEnabled.Value)
             {
@@ -219,8 +222,7 @@ namespace Untitled_Ghost_Mod
                 var bump = Melon<UGM>.Instance.smoothCamBump.Value;
                 var speed = Melon<UGM>.Instance.smoothCamSpeed.Value;
 
-                var prog = Mathf.Abs(Mathf.Clamp(Input.GetAxisRaw("Horizontal") + Input.GetAxisRaw("Vertical"), -1, 1));
-                var target = __instance.transform.position + (__instance.transform.up * bump * prog);
+                var target = __instance.transform.position + __instance.transform.up * bump;
                 // Woopsie, don't wanna fix it
                 target.z = -10;
                 cam.transform.position = Vector3.Lerp(prevCam, target, Time.deltaTime * speed);
