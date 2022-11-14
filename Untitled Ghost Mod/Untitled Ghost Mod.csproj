@@ -461,8 +461,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches.cs" />
-    <Compile Include="PhotonObject.cs" />
-    <Compile Include="Object.cs" />
+    <Compile Include="Photon.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="UGM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

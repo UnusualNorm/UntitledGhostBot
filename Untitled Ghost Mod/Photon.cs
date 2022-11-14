@@ -5,7 +5,8 @@ namespace Untitled_Ghost_Mod
 {
     internal class UGMPhotonObject : MonoBehaviourPunCallbacks
     {
-        public int maxPlayers;
+        public UGM ugm;
+        public MelonPreferences_Entry<byte> maxPlayers;
 
         public override void OnCreatedRoom()
         {
@@ -13,7 +14,7 @@ namespace Untitled_Ghost_Mod
 
             // TODO: Change this to a slider
             Melon<UGM>.Logger.Msg($"Changing max players: {maxPlayers}");
-            PhotonNetwork.CurrentRoom.MaxPlayers = (byte)maxPlayers;
+            PhotonNetwork.CurrentRoom.MaxPlayers = maxPlayers.Value;
         }
     }
 }
