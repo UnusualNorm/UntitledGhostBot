@@ -12,6 +12,9 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Pathfinding;
+using UnityEngine.Tilemaps;
+using System.Reflection;
 
 namespace Untitled_Ghost_Mod
 {
@@ -251,4 +254,90 @@ namespace Untitled_Ghost_Mod
             }
         }
     }
+
+    [HarmonyPatch(typeof(StopHunting), "Awake")]
+    static class DisableHuntStopPatch
+    {
+        private static void Prefix(StopHunting __instance)
+        {
+            Melon<UGM>.Logger.Msg("Pre-patching hunt stopper...");
+            __instance.GetComponent<PolygonCollider2D>().enabled = false;
+        }
+
+        private static void Postfix(StopHunting __instance)
+        {
+            Melon<UGM>.Logger.Msg("Post-patching hunt stopper...");
+            var endButton = GetPrivateValue<Button, StopHunting>("endButton", __instance);
+
+            typeof(StopHunting).InvokeMember("SetInHouse", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, __instance, new object[] { true });
+            endButton.enabled = true;
+        }
+    }
+
+    [HarmonyPatch(typeof(Door), "Update")]
+    static class DoorUnlockPatch
+    {
+        private static bool isHunting;
+
+        private static void Prefix(Door __instance)
+        {
+            var eai = GetPrivateValue<EnemyAI, Door>("eai", __instance);
+            if (!eai || !eai.hunting) return;
+
+            eai.hunting = false;
+            isHunting = true;
+        }
+
+        private static void Postfix(Door __instance)
+        {
+            if (!isHunting) return;
+            var eai = GetPrivateValue<EnemyAI, Door>("eai", __instance);
+            eai.hunting = true;
+            isHunting = false;
+        }
+    }
+
+    [HarmonyPatch(typeof(Door), "Update")]
+    static class GhostDoorPatch
+    {
+        private static bool isOpen;
+
+        private static void Postfix(Door __instance)
+        {
+            var doorOpen = GetPrivateValue<bool, Door>("doorOpen", __instance);
+
+            if (isOpen != doorOpen)
+            {
+                var silentObstacles = FindComponentWithName<TilemapCollider2D>("Silent Obstacle for ghost");
+                if (!silentObstacles)
+                    Melon<UGM>.Logger.Msg("Couldn't find ghost obstacles, this isn't good...");
+                else silentObstacles.gameObject.SetActive(!doorOpen);
+                isOpen = doorOpen;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(EnemyAI), "Awake")]
+    static class OutdoorGhostPatch
+    {
+        private static void Postfix(EnemyAI __instance)
+        {
+            // TODO: Programatically determine this...
+            var graph = AstarPath.active.data.gridGraph;
+            graph.unclampedSize *= 10;
+            AstarPath.active.Scan(graph);
+        }
+    }
+
+    /*[HarmonyPatch(typeof(EnemyAI), "Update")]
+    static class TempPatch
+    {
+        private static void Prefix(EnemyAI __instance)
+        {
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                __instance.hunting = !__instance.hunting;
+            }
+        }
+    }*/
 }
