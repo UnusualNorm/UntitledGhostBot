@@ -7,6 +7,7 @@ namespace Untitled_Ghost_Mod
     public class UGM : MelonMod
     {
         private MelonPreferences_Category ugmCategory;
+        public MelonPreferences_Entry<string> username;
 
         public MelonPreferences_Entry<bool> smoothCamEnabled;
         public MelonPreferences_Entry<float> smoothCamSpeed;
@@ -24,6 +25,8 @@ namespace Untitled_Ghost_Mod
 
             LoggerInstance.Msg("Creating Melon configuration...");
             ugmCategory = MelonPreferences.CreateCategory("UGM");
+            username = ugmCategory.CreateEntry<string>("Username", "");
+
             smoothCamEnabled = ugmCategory.CreateEntry<bool>("SmoothCam", true);
             smoothCamSpeed = ugmCategory.CreateEntry<float>("SmoothCameraSpeed", 6);
             smoothCamBump = ugmCategory.CreateEntry<float>("SmoothCameraBump", 1);

@@ -51,42 +51,28 @@ namespace Untitled_Ghost_Mod
         }
     }
 
-    [HarmonyPatch(typeof(ConnectToServer), "OnClickConnect")]
-    static class UsernameChangePatch
+    [HarmonyPatch(typeof(ConnectToServer), "Start")]
+    static class UsernamePatch
     {
-        private static bool hasAttempted = false;
-
-        private static void Prefix(ConnectToServer __instance)
+        private static void Postfix(ConnectToServer __instance)
         {
-            if (!PlayerPrefs.HasKey("Nickname")) return;
-            Melon<UGM>.Logger.Msg("Patching username change blocker...");
-            if (PlayerPrefs.GetString("Nickname", "") == __instance.usernameInput.text) return;
-
-            if (!hasAttempted)
-            {
-                __instance.buttonText.text = "Changing username... Are you sure?";
-                hasAttempted = true;
-                return;
-            }
-
-            PlayerPrefs.DeleteKey("Nickname");
-            hasAttempted = false;
-            Melon<UGM>.Logger.Msg("Patched username change blocker!");
+            var username = Melon<UGM>.Instance.username;
+            if (username.Value == "")
+                username.Value = PlayerPrefs.GetString("Nickname", "");
+            __instance.usernameInput.text = username.Value;
         }
     }
 
-    /*[HarmonyPatch(typeof(BookUI), "Start")]
-    static class CorrectGhostChoicePatch
+    [HarmonyPatch(typeof(ConnectToServer), "OnClickConnect")]
+    static class UsernameChangePatch
     {
-        private static void Postfix(BookUI __instance)
+        private static void Postfix(ConnectToServer __instance)
         {
-            Melon<UGM>.Logger.Msg("Patching correct ghost choice...");
-            var eai = GameObject.FindWithTag("Ghost").GetComponent<EnemyAI>();
-            // No idea if I NEED to use .ToLower(), but it doesn't hurt to be safe...
-            var ghostI = __instance.guessDropdown.options.FindIndex(type => type.text.ToLower() == eai.currghosttype.ToLower());
-            __instance.guessDropdown.value = ghostI;
+            var username = Melon<UGM>.Instance.username;
+            username.Value = __instance.usernameInput.text;
+            Melon<UGM>.Instance.Save();
         }
-    }*/
+    }
 
     [HarmonyPatch(typeof(LuigiBoard), "Start")]
     static class ExtraLuigiBoardPatch
@@ -234,27 +220,6 @@ namespace Untitled_Ghost_Mod
         }
     }
 
-    [HarmonyPatch(typeof(Flashlight), "Update")]
-    static class UltraFlashlightPatch
-    {
-        private static void Postfix()
-        {
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                Melon<UGM>.Logger.Msg("Toggling ULTRA-FLASHLIGHT...");
-                var children = SceneManager.GetActiveScene().GetRootGameObjects();
-                var shadow = Array.Find(children, child => child.name == "Shadow");
-                if (!shadow)
-                {
-                    Melon<UGM>.Logger.Warning("Could not find shadow...");
-                    return;
-                }
-
-                shadow.SetActive(!shadow.activeSelf);
-            }
-        }
-    }
-
     [HarmonyPatch(typeof(StopHunting), "Awake")]
     static class DisableHuntStopPatch
     {
@@ -328,16 +293,4 @@ namespace Untitled_Ghost_Mod
             AstarPath.active.Scan(graph);
         }
     }
-
-    /*[HarmonyPatch(typeof(EnemyAI), "Update")]
-    static class TempPatch
-    {
-        private static void Prefix(EnemyAI __instance)
-        {
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                __instance.hunting = !__instance.hunting;
-            }
-        }
-    }*/
 }

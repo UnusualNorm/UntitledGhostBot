@@ -460,6 +460,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AntiDub.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Photon.cs" />
     <Compile Include="Utils.cs" />
